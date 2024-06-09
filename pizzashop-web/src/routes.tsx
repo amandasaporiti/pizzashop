@@ -2,8 +2,8 @@ import { Route, Routes } from 'react-router-dom'
 import { AppLayout } from './_layouts/app-layout'
 import { Dashboard } from './pages/app/dashboard/dashboard'
 import { Orders } from './pages/app/orders/orders'
-import { RegisterStore } from './pages/auth/register-store'
 import { SignIn } from './pages/auth/sign-in'
+import { SignUp } from './pages/auth/sign-up'
 
 export function AppRoutes() {
   return (
@@ -13,10 +13,8 @@ export function AppRoutes() {
         <Route path="/pedidos" element={<Orders />} />
       </Route>
 
-      {/* <Route path="/" element={<AuthLayout />}> */}
       <Route path="/entrar" element={<SignIn />} />
-      <Route path="/novo-estabelecimento" element={<RegisterStore />} />
-      {/* </Route> */}
+      <Route path="/criar-conta" element={<SignUp />} />
     </Routes>
   )
 }
