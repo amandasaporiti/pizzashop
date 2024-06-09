@@ -1,13 +1,19 @@
+import { QueryClientProvider } from '@tanstack/react-query'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from './contexts/theme-provider'
+import { queryClient } from './lib/query-client'
 import { AppRoutes } from './routes'
 
 export function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <QueryClientProvider client={queryClient}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+        <ReactQueryDevtools />
+      </QueryClientProvider>
     </ThemeProvider>
   )
 }
