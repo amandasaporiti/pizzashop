@@ -1,10 +1,57 @@
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useAuth } from '@/hooks/useAuth'
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Pizza } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { useForm } from 'react-hook-form'
+import { Link, useSearchParams } from 'react-router-dom'
+import { toast } from 'sonner'
+import { z } from 'zod'
+
+const signInSchema = z.object({
+  email: z.string().email().min(1, 'E-mail obrigatório'),
+})
+
+type SignInFormType = z.infer<typeof signInSchema>
 
 export function SignIn() {
+  const { authenticate } = useAuth()
+
+  const [searchParams] = useSearchParams()
+  const urlEmailParams = searchParams.get('email') ?? ''
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<SignInFormType>({
+    resolver: zodResolver(signInSchema),
+    defaultValues: {
+      email: urlEmailParams,
+    },
+  })
+
+  async function signIn({ email }: SignInFormType) {
+    try {
+      await authenticate({ email })
+
+      toast.success(
+        'E-mail de verificação enviado para sua caixa de entrada!',
+        {
+          action: {
+            label: 'Reenviar',
+            onClick: () => {
+              authenticate({ email })
+            },
+          },
+        },
+      )
+    } catch (error) {
+      toast.error('E-mail inválido, ou incorreto')
+    }
+  }
+
   return (
     <div className="flex flex-col px-8 py-6 max-w-7xl m-auto min-h-screen">
       <header className="flex items-center justify-between">
@@ -21,18 +68,23 @@ export function SignIn() {
         </Link>
       </header>
 
-      <div className="flex flex-col w-[500px] m-auto">
+      <form
+        onSubmit={handleSubmit(signIn)}
+        className="flex flex-col w-[500px] m-auto"
+      >
         <h1 className="font-bold text-4xl text-center">Acessar Dashboard</h1>
         <p className="text-center text-zinc-400 mt-2">
           Acompanhe suas vendas pelo painel do parceiro!
         </p>
 
         <div className="flex flex-col w-full space-y-1.5 mt-12 mb-4">
-          <Label>E-mail</Label>
-          <Input type="text" />
+          <Label htmlFor="email">E-mail</Label>
+          <Input type="text" id="email" {...register('email')} />
         </div>
-        <Button type="submit">Acessar Painel</Button>
-      </div>
+        <Button type="submit" disabled={isSubmitting}>
+          Acessar Painel
+        </Button>
+      </form>
     </div>
   )
 }
