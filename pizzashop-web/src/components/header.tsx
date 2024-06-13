@@ -2,7 +2,7 @@ import { Home, Pizza, UtensilsCrossed } from 'lucide-react'
 import { Separator } from './ui/separator'
 
 import { NavLink } from './nav-link'
-import { DropdownProfileStore } from './store-profile/dropdown-store-profile'
+import { DropdownRestaurantProfile } from './restaurant-profile/dropdown-restaurant-profile'
 import { ThemeToggle } from './theme-toggle'
 
 export function Header() {
@@ -26,13 +26,8 @@ export function Header() {
 
       <div className="flex items-center gap-3 ml-auto">
         <ThemeToggle />
-        <DropdownProfileStore />
+        <DropdownRestaurantProfile />
       </div>
     </header>
   )
 }
-
-/*
- * Dúvidas: Por que o Dialog precisa estar por volta de todos o DropdownMenu ao invés de so dentro do Item que ele será acionado.
-data-attributes
- */
