@@ -1,11 +1,5 @@
 import { api } from '@/lib/axios'
-
-interface RegisterRestaurantParams {
-  restaurantName: string
-  managerName: string
-  email: string
-  phone: string
-}
+import { RegisterRestaurantParams } from '@/types'
 
 export async function registerRestaurant({
   restaurantName,

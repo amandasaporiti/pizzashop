@@ -1,10 +1,7 @@
 import { api } from '@/lib/axios'
+import { AuthParams } from '@/types'
 
-interface SignInParams {
-  email: string
-}
-
-export async function signIn({ email }: SignInParams): Promise<void> {
+export async function signIn({ email }: AuthParams): Promise<void> {
   await api.post('/authenticate', {
     email,
   })
